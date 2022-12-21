@@ -13,22 +13,21 @@ form.addEventListener('submit', (e) => {
 
     saveTodo();
     renderTodo();
-    localStorage.setItem('todos', JSON.stringify(todos));
-})
+});
 
 function saveTodo() {
     const todoValue = todoInput.value;
 
     const isDuplicate = todos.some((todo) => todo.value.toUpperCase() === todoValue.toUpperCase());
 
-    if(todoValue === ''){
+    if (todoValue === '') {
         alert('todos empty')
     }
-    else if(isDuplicate){
+    else if (isDuplicate) {
         alert('todo exist')
     }
     else {
-        if(EditTodoID >= 0){
+        if (EditTodoID >= 0) {
             todos = todos.map((todo, index) => {
                 return {
                     ...todo,
@@ -44,11 +43,12 @@ function saveTodo() {
                 color: '#' + Math.floor(Math.random() * 16777215).toString(16),
             });
         }
+        localStorage.setItem('todos', JSON.stringify(todos));
     }
     todoInput.value = '';
 }
 
-function renderTodo(){
+function renderTodo() {
     todosList.innerHTML = '';
 
     todos.forEach((todo, index) => {
@@ -71,7 +71,7 @@ todosList.addEventListener('click', (e) => {
     const target = e.target;
     const parentElement = target.parentNode;
 
-    if(parentElement.className !== 'todo') return;
+    if (parentElement.className !== 'todo') return;
 
     const todo = parentElement;
     const toDoId = Number(todo.id);
@@ -82,13 +82,12 @@ todosList.addEventListener('click', (e) => {
     action === 'check' && checkTodo(toDoId);
     action === 'edit' && editTodo(toDoId);
     action === 'delete' && deleteTodo(toDoId);
+});
 
-})
-
-function checkTodo(todoId){
+function checkTodo(todoId) {
     todos = todos.map((todo, index) => {
-        if(index === todoId) {
-           return {
+        if (index === todoId) {
+            return {
                 ...todo,
                 checked: !todo.checked
             }
@@ -104,14 +103,13 @@ function checkTodo(todoId){
     localStorage.setItem('todos', JSON.stringify(todos));
 }
 
-function editTodo(todoId){
+function editTodo(todoId) {
     todoInput.value = todos[todoId].value;
     EditTodoID = todoId;
 }
 
-function deleteTodo(todoId){
+function deleteTodo(todoId) {
     todos = todos.filter((todo, index) => index !== todoId);
-
     //re-render
     renderTodo();
     localStorage.setItem('todos', JSON.stringify(todos));
